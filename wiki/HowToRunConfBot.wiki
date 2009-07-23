@@ -10,7 +10,7 @@ This page explains how you can run your own conference bot.
   # Create a new gtalk account and add all users that wish to participate to its buddy list.
   # Ask users to add gtalk account to their buddy list to start participating in the conference.
   # Get the latest build versions from [http://conf-bot.googlecode.com/files/dist-latest.zip here].
-  # You will need J2SE 5 or above to run this application. Get the latest Java SE [[http://java.com/en/download/ here]]
+  # You will need J2SE 5 or above to run this application. Get the latest Java SE [http://java.com/en/download/ here]
 
 = Details =
 
