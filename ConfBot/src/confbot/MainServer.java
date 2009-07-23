@@ -14,7 +14,7 @@ import java.util.Enumeration;
 import java.util.Vector;
 
 /**
- *
+ * Ignore this class for the moment.
  * @author Aman
  */
 public class MainServer {
