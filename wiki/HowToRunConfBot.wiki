@@ -1,0 +1,24 @@
+#summary How to run conference bot.
+#labels Phase-Deploy,Featured
+
+= Introduction =
+
+This page explains how you can run your own conference bot.
+
+
+= Details =
+
+First get the latest build versions from [http://conf-bot.googlecode.com/files/dist-latest.zip here]. Unzip the archive and go to the dist folder.
+
+{{{
+cd dist
+}}}
+
+To run the project from the command line, type the following:
+
+{{{
+java -jar ConfBot.jar your-bot-account@gmail.com google-account-password choose-an-admin-password
+}}}
+
+To distribute this project, zip up the dist folder (including the lib folder)
+and distribute the ZIP file.
