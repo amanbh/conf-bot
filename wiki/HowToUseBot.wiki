@@ -51,6 +51,6 @@ Conf-Bot allows users to take part in a anagrams tournament that runs inside the
 
 To start receiving anagrams, send `/anagrams` to the bot and you will receive your first question. Unjumble the given letters to form the required word and you will be rewarded points. 
 
-Find a word too tough to handle? You can always use the `\hint` command to receive a hint. Beware that other players will also receive this hint and this will also lower the score that you will receive for answering this question.  
+Find a word too tough to handle? You can always use the `/hint` command to receive a hint. Beware that other players will also receive this hint and this will also lower the score that you will receive for answering this question.  
 
 Find out what's your score by sending `/scores` and stop the game by typing `/exit`.
