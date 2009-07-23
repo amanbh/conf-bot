@@ -28,7 +28,7 @@ _All commands are case insensitive._
   * `/log` - See log of past messages
 
 
-= Admin Commands =
+== Admin Commands ==
 
 The conf-bot allows the administrator to moderate and control the bot remotely. Any user who has the knowledge of the admin password (set at the time of starting the bot) can use the following commands to moderate the bot.
 
@@ -44,3 +44,13 @@ _All commands are case insensitive._
   * `/admin [admin_pass] warn [username] {Reason_Optional}` - Sends a warning to the user and notifies everybody else. Look up username using /who command.
   * `/admin [admin_pass] ban [username] {Time in minutes {Reason}}` - Bans the specified user for given time (default 10 minutes), reason may be specified. Notifies everybody.
 
+
+== Anagrams! ==
+
+Conf-Bot allows users to take part in a anagrams tournament that runs inside their chat windows! 
+
+To start receiving anagrams, send `/anagrams` to the bot and you will receive your first question. Unjumble the given letters to form the required word and you will be rewarded points. 
+
+Find a word too tough to handle? You can always use the `\hint` command to receive a hint. Beware that other players will also receive this hint and this will also lower the score that you will receive for answering this question.  
+
+Find out what's your score by sending `/scores` and stop the game by typing `/exit`.
