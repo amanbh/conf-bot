@@ -28,7 +28,8 @@ public class AnagramThread extends Thread {
     String WORD ="";
     String ANAGRAM ="";
     Main main;
-    
+    int SCORE;
+
     public AnagramThread(Main main) {
         this.main = main;
         dictionary = new Vector();
@@ -83,14 +84,14 @@ public class AnagramThread extends Thread {
             
             synchronized(this.main.scores) {
                 if (this.main.scores.containsKey(chat.getParticipant())) {
-                    int sc = this.WORD.length() + ((Integer) this.main.scores.remove(chat.getParticipant())).intValue();
+                    int sc = this.SCORE + ((Integer) this.main.scores.remove(chat.getParticipant())).intValue();
                     this.main.scores.put(chat.getParticipant(), new Integer(sc));
                 }
                 else {
-                    this.main.scores.put(chat.getParticipant(), new Integer (this.WORD.length()));
+                    this.main.scores.put(chat.getParticipant(), new Integer (this.SCORE));
                 }
             }
-            sendToAll("_" + this.main.getName(chat.getParticipant()) + " answers *" + this.WORD + "* correctly and scores " + this.WORD.length() + " points._");
+            sendToAll("_" + this.main.getName(chat.getParticipant()) + " answers *" + this.WORD + "* correctly and scores " + this.SCORE + " points._");
             
             getNewQuestion();
             sendToAll();
@@ -169,6 +170,7 @@ public class AnagramThread extends Thread {
             synchronized(ANAGRAM) {
                 this.WORD = choosenWord;
                 this.ANAGRAM = anagram;
+                this.SCORE = choosenWord.length();
             }
         }
     }
@@ -205,6 +207,7 @@ public class AnagramThread extends Thread {
         if (c1==0 || c2 == 0) {
             return getHint();
         }
+        this.SCORE = this.SCORE>c2?this.SCORE-c2:1;
         return new String (array);
     }
 
