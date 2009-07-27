@@ -91,7 +91,7 @@ public class AnagramThread extends Thread {
                     this.main.scores.put(chat.getParticipant(), new Integer (this.SCORE));
                 }
             }
-            sendToAll("_" + this.main.getName(chat.getParticipant()) + " answers *" + this.WORD + "* correctly and scores " + this.SCORE + " points._");
+            sendToAll("_" + this.main.getName(chat.getParticipant()) + " answers *" + this.WORD + "* correctly and scores " + this.SCORE + (this.SCORE==1?" point._":" points._"));
             
             getNewQuestion();
             sendToAll();
