@@ -56,15 +56,22 @@ public class Main implements Runnable {
     Hashtable scores = new Hashtable();
 
     ArrayList<String> messageLog;
-    static int MAX_MESSAGE_LOG_SIZE = 30;
+    static final int MAX_MESSAGE_LOG_SIZE = 30;
 
     String BOTUSERNAME;
     String BOTPASSWORD;
     String ADMINPASS;
+    String SERVERADDRESS;
+    static final String DEFAULT_SERVERADDRESS = "talk.google.com";
+    String SERVERPORT;
+    static final String DEFAULT_SERVERPORT = "5222";
+    String PROXY_SERVERADDRESS;
+    String PROXY_SERVERPORT;
     String PROXY_USER;
     String PROXY_PASS;
     private FileWriter fstream;
     private BufferedWriter out;
+    Launcher launcher;
                                                                                                                     private static String specialWords[] = {"fuck", "sex", "rape", "ass", "asshole", "fcuk", "slut", "chutiye", "chutiya", "madar", "boob", "porn", "choot", "behenchod", "incest"};
     static final String DEFAULT_PRESENCE = "Running a gtalkbot! *Now with anagrams! Start the game by \'/anagarms\'. Try them now!* Type your message and it will be forwarded to everyone. For help type \"/help\"";
 
@@ -86,36 +93,58 @@ public class Main implements Runnable {
 
     public void run() {
         try {
-            // Open Log File Writer
-            if (args.length >= 1) {
-                try {
-                    fstream = new FileWriter(args[0] + ".log");
-                    out = new BufferedWriter(fstream);
-                    System.out.println("DEBUG ----- LOG FILE READY");
-                } catch (IOException ex) {
-                    ex.printStackTrace();
-                }
-            }
-
             if (args.length < 5) {
-                debug_log("Missing arguments.");
+                System.out.println("Missing arguments.");
                 try {
                     BufferedReader console = new BufferedReader(new InputStreamReader(System.in));
-                    System.out.println("Google Username for Bot: ");
+
+                    System.out.println("Username for Bot: ");
                     BOTUSERNAME = console.readLine();
-                    System.out.println("Google Password for Bot: ");
+
+                    System.out.println("Password for Bot: ");
                     BOTPASSWORD = console.readLine();
+
                     System.out.println("Choose an admin password: ");
                     ADMINPASS = console.readLine();
                     System.out.println("Repeat admin password: ");
                     if (!console.readLine().equals(ADMINPASS)) {
-                        System.out.println("Admin Passwords don't match!");
+                        System.out.println("ERROR: Admin Passwords don't match! \nExiting now.");
                         return;
                     }
-                    System.out.println("Username for Proxy: ");
-                    PROXY_USER = console.readLine();
-                    System.out.println("Password for Proxy: ");
-                    PROXY_PASS = console.readLine();
+
+                    System.out.println("Server Address to connect to: (leave blank for default server)");
+                    String temp_response = console.readLine();
+                    if (temp_response.length() == 0 ) {
+                        SERVERADDRESS = Main.DEFAULT_SERVERADDRESS;
+                        SERVERPORT = Main.DEFAULT_SERVERPORT;
+                    } else {
+                        SERVERADDRESS = temp_response;
+                        System.out.println("Server Port to connect to: (leave blank for default port)");
+                        temp_response = console.readLine();
+                        if (temp_response.length() == 0) {
+                            SERVERPORT = Main.DEFAULT_SERVERPORT;
+                        } else {
+                            SERVERPORT = temp_response;
+                        }
+
+                    }
+                    
+                    System.out.println("Proxy Server Address: (leave blank for no proxy)");
+                    temp_response = console.readLine();
+                    if (temp_response.length() == 0) {
+                        PROXY_SERVERADDRESS = "";
+                        PROXY_SERVERPORT = "";
+                        PROXY_USER = "";
+                        PROXY_PASS = "";
+                    } else {
+                        PROXY_SERVERADDRESS = temp_response;
+                        System.out.println("Proxy Server Port: ");
+                        PROXY_SERVERPORT = console.readLine();
+                        System.out.println("Username for Proxy: ");
+                        PROXY_USER = console.readLine();
+                        System.out.println("Password for Proxy: ");
+                        PROXY_PASS = console.readLine();
+                    }
                 } catch (IOException ex) {
                     error_log(ex.toString());
                     error_log(ex.getStackTrace().toString());
@@ -126,8 +155,25 @@ public class Main implements Runnable {
                 BOTUSERNAME = args[0];
                 BOTPASSWORD = args[1];
                 ADMINPASS = args[2];
-                PROXY_USER = args[3];
-                PROXY_PASS = args[4];
+                SERVERADDRESS = args[3];
+                SERVERPORT = args[4];
+
+                if (args.length >= 9) {
+                    PROXY_SERVERADDRESS = args[5];
+                    PROXY_SERVERPORT = args[6];
+                    PROXY_USER = args[7];
+                    PROXY_PASS = args[8];
+                }
+
+            }
+
+            // Open Log File Writer
+            try {
+                fstream = new FileWriter(BOTUSERNAME + ".log");
+                out = new BufferedWriter(fstream);
+                System.out.println("DEBUG ----- LOG FILE READY");
+            } catch (IOException ex) {
+                ex.printStackTrace();
             }
 
             initializeConnection();
@@ -483,6 +529,9 @@ public class Main implements Runnable {
 
     public void debug_log(String str) {
         System.out.println(str);
+        if (this.launcher != null) {
+            this.launcher.addToLog("[Debug] " + str);
+        }
         if (out == null) {
             System.err.println("Missing log file");
             return;
@@ -499,6 +548,9 @@ public class Main implements Runnable {
 
     public void chat_log(String str) {
         System.out.println(str);
+        if (this.launcher != null) {
+            this.launcher.addToLog("[Chat] " + str);
+        }
         if (out == null) {
             return;
         } else {
@@ -514,6 +566,9 @@ public class Main implements Runnable {
 
     public void error_log(String str) {
         System.err.println(str);
+        if (this.launcher != null) {
+            this.launcher.addToLog("[Error] " + str);
+        }
         if (out == null) {
             return;
         } else {
