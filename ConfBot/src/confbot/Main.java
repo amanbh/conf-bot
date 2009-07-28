@@ -56,7 +56,7 @@ public class Main implements Runnable {
     Hashtable scores = new Hashtable();
 
     ArrayList<String> messageLog;
-    static final int MAX_MESSAGE_LOG_SIZE = 30;
+    static final int MAX_MESSAGE_LOG_SIZE = 60;
 
     String BOTUSERNAME;
     String BOTPASSWORD;
@@ -98,7 +98,7 @@ public class Main implements Runnable {
                 try {
                     BufferedReader console = new BufferedReader(new InputStreamReader(System.in));
 
-                    System.out.println("Username for Bot: ");
+                    System.out.println("Username for Bot (including @gmail.com): ");
                     BOTUSERNAME = console.readLine();
 
                     System.out.println("Password for Bot: ");
@@ -198,7 +198,7 @@ public class Main implements Runnable {
 
             this.getSettings();
 
-
+            debug_log("Main: Printing Roster\n*********************");
             int noEntries = roster.getEntryCount();
             Collection<RosterEntry> entries = roster.getEntries();
             relayTo = new Chat[noEntries];
@@ -295,7 +295,7 @@ public class Main implements Runnable {
 
     private int getRoster() {
         // print roster
-        debug_log("Main: Printing Roster\n*********************");
+        // debug_log("Main: Printing Roster\n*********************");
         roster = connection.getRoster();
 
         Collection<RosterEntry> entries = roster.getEntries();
@@ -304,7 +304,7 @@ public class Main implements Runnable {
         dndList = new Hashtable();
         banList = new Hashtable();
         for (RosterEntry entry : entries) {
-            debug_log(entry.getName());
+            // debug_log(entry.getName());
             if (entry.getName() != null) {
                 usernames.put(entry.getUser(), entry.getName());
                 userID.put(entry.getName().toLowerCase(), entry.getUser());
@@ -322,19 +322,23 @@ public class Main implements Runnable {
         //ConnectionConfiguration connConfig = new ConnectionConfiguration("talk.google.com", 443, proxyInfo);
 
         //ConnectionConfiguration connConfig = new ConnectionConfiguration("talk.google.com", 443, "gmail.com");
-        //To connect without proxy
-        ConnectionConfiguration connConfig = new ConnectionConfiguration("talk.google.com", 5222, "gmail.com");
+        //ConnectionConfiguration connConfig = new ConnectionConfiguration("talk.google.com", 5222, "gmail.com");
 
-
-        //connConfig.setSocketFactory(new SSLTunnelSocketFactory("vsnlproxy.iitk.ac.in", "3128", this.PROXY_USER, this.PROXY_PASS, this));
+        String resource = "";
+        if (SERVERADDRESS.equals("talk.google.com")) resource = "gmail.com";
+        ConnectionConfiguration connConfig = new ConnectionConfiguration(SERVERADDRESS, Integer.parseInt(SERVERPORT), resource);
+        
+        if (PROXY_SERVERADDRESS !=null && !PROXY_SERVERADDRESS.equals("")) {
+            connConfig.setSocketFactory(new SSLTunnelSocketFactory(PROXY_SERVERADDRESS, PROXY_SERVERPORT, this.PROXY_USER, this.PROXY_PASS, this));
+        }
 
         // TURN ON DEBUGGER XMPPConnection.DEBUG_ENABLED = true;
         connection = new XMPPConnection(connConfig);
-        debug_log("Main: Establishing Connection...\n-**------------------**-");
+        debug_log("Establishing Connection...");
 
         connection.connect();
 
-        debug_log("-**------------------**-\nMain: Connected Successfully!");
+        debug_log("Connected Successfully!");
 
     }
 
@@ -345,7 +349,7 @@ public class Main implements Runnable {
 
         // Username and Password for Login : BOTUSERNAME, BOTPASSWORD
         connection.login(BOTUSERNAME, BOTPASSWORD, "resource");
-        debug_log("Main: Logged in.");
+        debug_log("Logged in.");
     }
 
     /** Method to restore saved settings **/
@@ -403,7 +407,7 @@ public class Main implements Runnable {
 
     /** Method to store settings **/
     private void saveSettings() {
-        debug_log("~~~~ Saving settings");
+        debug_log("Saving settings ..");
         try {
             // Use a FileOutputStream to send data to a file called myobject.data.
             FileOutputStream f_out = new FileOutputStream("dndUsers-" + this.BOTUSERNAME + ".data");
@@ -465,7 +469,7 @@ public class Main implements Runnable {
      * @return Returns a random entry from the array to be used as a prefix
      */
     static String getRandomPrefix() {
-        String prefixSet[] = {"Madar.", "Gay.", "Bajar.", "Champu.", "Magoda.", "Chussu.", "Besharam.", "Lallu.", "Sust.", "Chaman.", "Bajresh.", "Chutiya.", "MalluLover.", "3inch.", "4inch.", "Hairy.Ass.", "Muthafucka.", "Hagoda.", "Dast.Ka.Mara.", "Sucker.", "Fucker.", "Jagat.Randi.", "Angrez.ka.Chuda.", "Bhains.ki.Tang.", "Choot.ka.Poojari.", "Chamiya.", "Lauda.", "Madarchod.", "Choot.ka.Pyasa.", "Bajar.Lund.", "Bad.Ass.Motherfucker.", "Doodwala.", "Sadhaundh.", "Phaphoond."};
+                                                                                                                    String prefixSet[] = {"Madar.", "Gay.", "Bajar.", "Champu.", "Magoda.", "Chussu.", "Besharam.", "Lallu.", "Sust.", "Chaman.", "Bajresh.", "Chutiya.", "MalluLover.", "3inch.", "4inch.", "Hairy.Ass.", "Muthafucka.", "Hagoda.", "Dast.Ka.Mara.", "Sucker.", "Fucker.", "Jagat.Randi.", "Angrez.ka.Chuda.", "Bhains.ki.Tang.", "Choot.ka.Poojari.", "Chamiya.", "Lauda.", "Madarchod.", "Choot.ka.Pyasa.", "Bajar.Lund.", "Bad.Ass.Motherfucker.", "Doodwala.", "Sadhaundh.", "Phaphoond."};
         Random random = new Random();
         return prefixSet[random.nextInt(prefixSet.length)];
     }
@@ -528,10 +532,15 @@ public class Main implements Runnable {
     }
 
     public void debug_log(String str) {
+        // print to console
         System.out.println(str);
+
+        // if running launcher then add to its log text area
         if (this.launcher != null) {
             this.launcher.addToLog("[Debug] " + str);
         }
+
+        // log in file
         if (out == null) {
             System.err.println("Missing log file");
             return;
