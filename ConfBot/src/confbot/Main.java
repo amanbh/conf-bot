@@ -57,7 +57,8 @@ public class Main implements Runnable {
 
     ArrayList<String> messageLog;
     static final int MAX_MESSAGE_LOG_SIZE = 60;
-
+    static final String VERSION = "0.2.1";
+    
     String BOTUSERNAME;
     String BOTPASSWORD;
     String ADMINPASS;
@@ -957,6 +958,7 @@ class EchoMessageListener implements MessageListener {
                 this.enterMessageToLog(chat, message.getBody());
                 long currenttime = System.currentTimeMillis();
                 String reply = "_Status: " + (this.main.running ? "Bot running_" : "Bot paused_");
+                reply = reply.concat("\n_Version: " + this.main.VERSION + "_");
                 reply = reply.concat("\n_Content Filter Mode: " + this.main.mode + "_");
                 if (this.main.pollRunning) {
                     reply = reply.concat("\n_Current Poll: " + this.main.poll + "_\n");
@@ -1086,8 +1088,8 @@ class EchoMessageListener implements MessageListener {
                 return;
             }
 
-            if (message.getBody().indexOf("/admin " + this.main.ADMINPASS) != -1) {
-                chat.sendMessage("_Sorry your message has not been forwarded. Reason: Message contains password._");
+            if (message.getBody().toLowerCase().startsWith("/admin")) {
+                chat.sendMessage("_Sorry your message has not been forwarded. Incorrect password and/or invalid command. If you are trying to run a admin command, try \"/admin <password> help\"._");
                 return;
             }
 
