@@ -18,7 +18,7 @@ import org.jivesoftware.smack.Chat;
 import org.jivesoftware.smack.XMPPException;
 
 /**
- *
+ * This class implements the thread for Anagrams game.
  * @author Aman
  */
 public class AnagramThread extends Thread {

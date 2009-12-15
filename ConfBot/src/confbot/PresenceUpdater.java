@@ -14,7 +14,8 @@ import org.jivesoftware.smack.RosterEntry;
 import org.jivesoftware.smack.XMPPConnection;
 
 /**
- *
+ * This class implements a thread to update rpesence information of subscribed users
+ * and maintains the relayTo chat[] array of Main class.
  * @author Aman
  */
 public class PresenceUpdater extends Thread {
