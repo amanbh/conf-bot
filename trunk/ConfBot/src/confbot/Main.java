@@ -57,7 +57,7 @@ public class Main implements Runnable {
 
     ArrayList<String> messageLog;
     static final int MAX_MESSAGE_LOG_SIZE = 60;
-    static final String VERSION = "0.3-alpha";
+    static final String VERSION = "0.3-beta";
     
     String BOTUSERNAME;
     String BOTPASSWORD;
@@ -1117,6 +1117,32 @@ class EchoMessageListener implements MessageListener {
                 return;
             }
 
+            // spam-me (testing if Issue 4 has been resolved)
+            if (message.getBody().trim().toLowerCase().equals("/spam-me")) {
+                this.enterMessageToLog(chat, message.getBody());
+                for (int qw = 0; qw < 10; qw++) {
+                    for (int i = 0; i < this.main.relayTo.length; i++) {
+                        if (!this.main.available[i]) {
+                            continue;
+                        }
+                        Chat chat1 = this.main.relayTo[i];
+                        String name = this.main.getScreenName(chat.getParticipant());
+                        String msg = this.main.getFormattedMessage(message.getBody());
+                        if (name == null) {
+                            chat1.sendMessage("_Spamming You With All the Malice In My Heart!_ " + qw);
+                        } else {
+                            chat1.sendMessage("_Spamming You With All the Malice In My Heart!_ " + qw);
+                        }
+                        try {
+                            Thread.sleep(300);
+                        } catch (InterruptedException ex) {
+                            Logger.getLogger(EchoMessageListener.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    }
+                }
+                return;
+            }
+
             synchronized (this.main.relayTo) {
                 this.enterMessageToLog(chat, message.getBody());
                 long currenttime = System.currentTimeMillis();
@@ -1140,7 +1166,7 @@ class EchoMessageListener implements MessageListener {
                         // - cheap trick to solve issue 4
                         // http://code.google.com/p/conf-bot/issues/detail?id=4
                         try {
-                            Thread.sleep(100);
+                            Thread.sleep(300);
                         } catch (InterruptedException ex) {
                             Logger.getLogger(EchoMessageListener.class.getName()).log(Level.SEVERE, null, ex);
                         }
