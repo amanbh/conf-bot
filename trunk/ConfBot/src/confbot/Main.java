@@ -30,7 +30,7 @@ import org.jivesoftware.smack.packet.Presence;
 import org.jivesoftware.smack.packet.Presence.Type;
 
 /**
- *
+ * Main Class for ConfBot Application.
  * @author Aman
  */
 public class Main implements Runnable {
@@ -79,19 +79,27 @@ public class Main implements Runnable {
 //    static boolean SHOULD_ACCPET_FILES = true;
 //    static FileTransferManager manager;
     /**
-     * The main() method for ConfBot
+     * The main() method for ConfBot Creates a new Main object with specified arguments.
      * @param args the command line arguments
      */
     public static void main(String[] args) {
         new Main(args);
     }
 
+   /**
+    * Constructor for Main class.
+    * Starts a new thread for this Main object.
+    * @param args the commandline arguments passed to the constructor
+    */
     public Main(String[] args) {
         this.args = args;
         Thread t = new Thread(this);
         t.start();
     }
 
+   /**
+    * Run method for Main class.
+    */
     public void run() {
         try {
             if (args.length < 5) {
@@ -256,6 +264,7 @@ public class Main implements Runnable {
 
     }
 
+    /* Method to format the message body according to the content mode */
     String getFormattedMessage(String body) {
         if (this.mode.equals("clean")) {
             String split[] = body.split(" ", 100);
@@ -294,6 +303,7 @@ public class Main implements Runnable {
         return retstr;
     }
 
+    /* Method to get roster information */
     private int getRoster() {
         // print roster
         // debug_log("Main: Printing Roster\n*********************");
@@ -318,6 +328,7 @@ public class Main implements Runnable {
 
     }
 
+    /* Method to initialize coonnection to XMPP server */
     private void initializeConnection() throws XMPPException {
         //ProxyInfo proxyInfo = new ProxyInfo(ProxyInfo.ProxyType.HTTP, "ernetproxy.iitk.ac.in", 3128, "amanbh", "{P;;osa");
         //ConnectionConfiguration connConfig = new ConnectionConfiguration("talk.google.com", 443, proxyInfo);
@@ -408,7 +419,7 @@ public class Main implements Runnable {
 
     /** Method to store settings **/
     private void saveSettings() {
-        debug_log("Saving settings ..");
+        //debug_log("Saving settings ..");
         try {
             // Use a FileOutputStream to send data to a file called myobject.data.
             FileOutputStream f_out = new FileOutputStream("dndUsers-" + this.BOTUSERNAME + ".data");
@@ -989,6 +1000,8 @@ class EchoMessageListener implements MessageListener {
                 this.main.anagramThread.newlyJoined(chat);
                 return;
             }
+
+            // exit (anagrams)
             if (message.getBody().toLowerCase().startsWith("/exit") && this.main.anagramChats.containsKey(chat.getParticipant())) {
                 this.enterMessageToLog(chat, message.getBody());
                 this.main.anagramChats.remove(chat.getParticipant());
@@ -1008,10 +1021,14 @@ class EchoMessageListener implements MessageListener {
                 }
                 return;
             }
+
+            // hint (anagrams)
             if (message.getBody().toLowerCase().startsWith("/hint") && this.main.anagramChats.containsKey(chat.getParticipant())) {
                 this.main.anagramThread.sendAHint(chat);
                 return;
             }
+
+            // scores
             if (message.getBody().toLowerCase().startsWith("/scores")) {
                 this.enterMessageToLog(chat, message.getBody());
 
@@ -1093,6 +1110,7 @@ class EchoMessageListener implements MessageListener {
                 return;
             }
 
+            // set topic
             if (message.getBody().trim().toLowerCase().equals("/set topic")) {
                 this.enterMessageToLog(chat, message.getBody());
                 chat.sendMessage("_Error: Missing topic!_");
@@ -1137,7 +1155,7 @@ class EchoMessageListener implements MessageListener {
         this.main.messageLog.add("_(" +TIME + ")_ *" + name + "*: " +  msg);
         
         if (this.main.messageLog.size() > Main.MAX_MESSAGE_LOG_SIZE) {
-            main.debug_log("Max Message Log Size Reached.");
+            //main.debug_log("Max Message Log Size Reached.");
             this.main.messageLog.remove(0);
         }
 
