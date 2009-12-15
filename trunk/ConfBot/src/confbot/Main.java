@@ -57,7 +57,7 @@ public class Main implements Runnable {
 
     ArrayList<String> messageLog;
     static final int MAX_MESSAGE_LOG_SIZE = 60;
-    static final String VERSION = "0.2.1";
+    static final String VERSION = "0.3-alpha";
     
     String BOTUSERNAME;
     String BOTPASSWORD;
@@ -1136,6 +1136,15 @@ class EchoMessageListener implements MessageListener {
                         } else {
                             chat1.sendMessage("*" + name + ":* " + msg);
                         }
+                        // Sleep for 100 ms between forwarding messages 
+                        // - cheap trick to solve issue 4
+                        // http://code.google.com/p/conf-bot/issues/detail?id=4
+                        try {
+                            Thread.sleep(100);
+                        } catch (InterruptedException ex) {
+                            Logger.getLogger(EchoMessageListener.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                        // End of cheap trick
                     }
                 }
             }
