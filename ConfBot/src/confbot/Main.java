@@ -74,7 +74,7 @@ public class Main implements Runnable {
     private BufferedWriter out;
     Launcher launcher;
                                                                                                                     private static String specialWords[] = {"fuck", "sex", "rape", "ass", "asshole", "fcuk", "slut", "chutiye", "chutiya", "madar", "boob", "porn", "choot", "behenchod", "incest"};
-    static final String DEFAULT_PRESENCE = "Running a gtalkbot! *Now with anagrams! Start the game by \'/anagarms\'. Try them now!* Type your message and it will be forwarded to everyone. For help type \"\\help\"";
+    static final String DEFAULT_PRESENCE = "Running a gtalkbot! *Now with anagrams! Start the game by \'\\anagarms\'. Try them now!* Type your message and it will be forwarded to everyone. For help type \"\\help\"";
 
 //    static boolean SHOULD_ACCPET_FILES = true;
 //    static FileTransferManager manager;
