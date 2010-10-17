@@ -1,7 +1,7 @@
 #summary Features currently available
 #labels Featured
 
-=== Starting Revision 21, All commands now start with "\" instead of "/" - This is to improve user-experience on certain IM clients like empathy. Changes have not yet been made to zipped distributions. ===
+*Starting Revision 21, All commands now start with "\" instead of "/" - This is to improve user-experience on certain IM clients like empathy. Changes have not yet been made to zipped distributions.*
 
 = Introduction =
 
@@ -10,6 +10,9 @@ When your bot is running, all users that have added the bot-account to their bud
 Users can also send private messages to each other that are not seen by other users. To end a private message (PM), type `@` followed by the intended recipient's name followed by the message. Example: To send a message to John, type `@john how are you doing johnathan?`
 
 = Commands and their description =
+
+
+*Starting Revision 21, All commands now start with "\" instead of "/" - This is to improve user-experience on certain IM clients like empathy. Changes have not yet been made to zipped distributions.*
 
 The conf-bot includes a number of useful and fun features for the user in addition to the conference. These are available using simple commands that are listed below. 
 
@@ -46,6 +49,7 @@ _All commands are case insensitive._
   * `/admin [admin_pass] warn [username] {Reason_Optional}` - Sends a warning to the user and notifies everybody else. Look up username using /who command.
   * `/admin [admin_pass] ban [username] {Time in minutes {Reason}}` - Bans the specified user for given time (default 10 minutes), reason may be specified. Notifies everybody.
 
+  * '/admin [admin_pass] help` - Displays help for admin commands.
 
 == Anagrams! ==
 
