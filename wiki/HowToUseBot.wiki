@@ -1,6 +1,8 @@
 #summary Features currently available
 #labels Featured
 
+=== Starting Revision 21, All commands now start with "\" instead of "/" - This is to improve user-experience on certain IM clients like empathy. Changes have not yet been made to zipped distributions. ===
+
 = Introduction =
 
 When your bot is running, all users that have added the bot-account to their buddy list will see that it is online and available. Any message that they wish to send to other users connected to the bot, they can send to the bot using any IM client that supports Gtalk, and the bot will forward that message to everyone else. 
