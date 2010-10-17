@@ -215,13 +215,14 @@ public class Main implements Runnable {
             int x = 0;
             int j = 0;
             for (RosterEntry entry : entries) {
-                debug_log("#" + entry.getType());
-                debug_log(entry + ": " + roster.getPresence(entry.getUser()).toString());
                 if (roster.getPresence(entry.getUser()).isAvailable()) {
                     available[x++] = true;
                 } else {
                     available[x++] = false;
                 }
+                debug_log("#" + entry.getType());
+                debug_log(entry + ": " + roster.getPresence(entry.getUser()).toString());
+
                 relayTo[j++] = connection.getChatManager().createChat(entry.getUser(), new EchoMessageListener(this));
             }
             debug_log("*********************");
@@ -988,6 +989,7 @@ class EchoMessageListener implements MessageListener {
 
             // status
             if (message.getBody().toLowerCase().startsWith("\\status")) {
+                main.debug_log("--- Status called.");
                 this.enterMessageToLog(chat, message.getBody());
                 long currenttime = System.currentTimeMillis();
                 String reply = "_Status: " + (this.main.running ? "Bot running_" : "Bot paused_");
@@ -999,6 +1001,8 @@ class EchoMessageListener implements MessageListener {
                 } else {
                     reply = reply.concat("\n_No poll is running._");
                 }
+                main.debug_log(reply);
+                main.debug_log(chat.getParticipant());
                 Long dndexpiry = (Long) this.main.dndList.get(chat.getParticipant());
                 Long banexpiry = (Long) this.main.banList.get(chat.getParticipant());
                 if (dndexpiry.longValue() > currenttime) {
@@ -1009,7 +1013,9 @@ class EchoMessageListener implements MessageListener {
                     long timeremaining = (banexpiry.longValue() - currenttime) / (60 * 1000);
                     reply = reply.concat("\n_You are on the BAN list and join conference in " + timeremaining + " minutes._");
                 }
+                main.debug_log(reply);
                 reply = reply.concat("\n_" + this.main.messageLog.size() + " past messages in the log._");
+                main.debug_log(reply);
                 chat.sendMessage(reply);
                 return;
             }
@@ -1156,7 +1162,7 @@ class EchoMessageListener implements MessageListener {
                             chat1.sendMessage("_Spamming You With All the Malice In My Heart!_ " + qw);
                         }
                         try {
-                            Thread.sleep(300);
+                            Thread.sleep(30);
                         } catch (InterruptedException ex) {
                             Logger.getLogger(EchoMessageListener.class.getName()).log(Level.SEVERE, null, ex);
                         }
