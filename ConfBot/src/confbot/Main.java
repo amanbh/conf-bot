@@ -74,7 +74,7 @@ public class Main implements Runnable {
     private BufferedWriter out;
     Launcher launcher;
                                                                                                                     private static String specialWords[] = {"fuck", "sex", "rape", "ass", "asshole", "fcuk", "slut", "chutiye", "chutiya", "madar", "boob", "porn", "choot", "behenchod", "incest"};
-    static final String DEFAULT_PRESENCE = "Running a gtalkbot! *Now with anagrams! Start the game by \'/anagarms\'. Try them now!* Type your message and it will be forwarded to everyone. For help type \"/help\"";
+    static final String DEFAULT_PRESENCE = "Running a gtalkbot! *Now with anagrams! Start the game by \'/anagarms\'. Try them now!* Type your message and it will be forwarded to everyone. For help type \"\\help\"";
 
 //    static boolean SHOULD_ACCPET_FILES = true;
 //    static FileTransferManager manager;
@@ -693,7 +693,7 @@ class EchoMessageListener implements MessageListener {
 //            }
 
             // pause
-            if (message.getBody().toLowerCase().startsWith("/admin " + this.main.ADMINPASS + " pause") && this.main.running) {
+            if (message.getBody().toLowerCase().startsWith("\\admin " + this.main.ADMINPASS + " pause") && this.main.running) {
                 main.debug_log("*** ADMIN MESSAGE RECEIVED ***\nBot paused by " + chat.getParticipant() + " : " + message.getBody());
                 this.main.running = false;
                 this.main.sendToAll("_Bot paused by " + this.main.getScreenName(chat.getParticipant()) + "_");
@@ -702,7 +702,7 @@ class EchoMessageListener implements MessageListener {
             }
 
             // start
-            if (message.getBody().toLowerCase().startsWith("/admin " + this.main.ADMINPASS + " start") && !this.main.running) {
+            if (message.getBody().toLowerCase().startsWith("\\admin " + this.main.ADMINPASS + " start") && !this.main.running) {
                 main.debug_log("*** ADMIN MESSAGE RECEIVED ***\nBot started by " + chat.getParticipant() + " : " + message.getBody());
                 this.main.running = true;
                 this.main.sendToAll("_Bot started by " + this.main.getScreenName(chat.getParticipant()) + "_");
@@ -711,10 +711,10 @@ class EchoMessageListener implements MessageListener {
             }
 
             // quit
-            if (message.getBody().toLowerCase().startsWith("/admin " + this.main.ADMINPASS + " quit")) {
+            if (message.getBody().toLowerCase().startsWith("\\admin " + this.main.ADMINPASS + " quit")) {
                 main.debug_log("*** ADMIN MESSAGE RECEIVED ***\nBot quit by " + chat.getParticipant() + " : " + message.getBody());
                 if (this.main.running) {
-                    if (!message.getBody().toLowerCase().startsWith("/admin " + this.main.ADMINPASS + " quit forced")) {
+                    if (!message.getBody().toLowerCase().startsWith("\\admin " + this.main.ADMINPASS + " quit forced")) {
                         main.debug_log("Bot Status was running.");
                         chat.sendMessage("_Could not perform action. Please pause bot first._");
                         return;
@@ -728,16 +728,16 @@ class EchoMessageListener implements MessageListener {
             }
 
             // sendtoall
-            if (message.getBody().toLowerCase().startsWith("/admin " + this.main.ADMINPASS + " sendtoall")) {
+            if (message.getBody().toLowerCase().startsWith("\\admin " + this.main.ADMINPASS + " sendtoall")) {
                 main.debug_log("*** ADMIN MESSAGE RECEIVED ***\nBroadcast message by " + chat.getParticipant() + " : " + message.getBody());
-                this.main.sendToAll("*Bot:* " + message.getBody().substring(("/admin " + this.main.ADMINPASS + " sendtoall").length() + 1));
+                this.main.sendToAll("*Bot*: " + message.getBody().substring(("\\admin " + this.main.ADMINPASS + " sendtoall").length() + 1));
                 return;
             }
 
             // warn
-            if (message.getBody().toLowerCase().startsWith("/admin " + this.main.ADMINPASS + " warn")) {
+            if (message.getBody().toLowerCase().startsWith("\\admin " + this.main.ADMINPASS + " warn")) {
                 String[] split = message.getBody().split(" ", 6);
-                //String warned = message.getBody().substring(("/admin " + this.ADMINPASS + " warn ").length(), (message.getBody().toLowerCase()).indexOf(' ', ("/admin " + this.ADMINPASS + " warn ").length()));
+                //String warned = message.getBody().substring(("\\admin " + this.ADMINPASS + " warn ").length(), (message.getBody().toLowerCase()).indexOf(' ', ("\\admin " + this.ADMINPASS + " warn ").length()));
                 String warned = split[3];
                 String warnedUser = (String) this.main.userID.get(warned.toLowerCase());
                 main.debug_log("DEBUG warned " + warned + "-> " + warnedUser);
@@ -750,14 +750,14 @@ class EchoMessageListener implements MessageListener {
                     this.main.connection.getChatManager().createChat(warnedUser, this).sendMessage(privateMessage);
                 }
                 main.debug_log("*** ADMIN MESSAGE RECEIVED ***\nIssued warning to " + warned + " by " + chat.getParticipant() + " : " + message.getBody());
-                this.main.sendToAll("_*Bot:* Issued warning to " + warned + " : " + message.getBody().substring(message.getBody().indexOf(warned) + warned.length()) + "_");
+                this.main.sendToAll("_*Bot*: Issued warning to " + warned + " : " + message.getBody().substring(message.getBody().indexOf(warned) + warned.length()) + "_");
                 return;
             }
 
             // ban
-            if (message.getBody().toLowerCase().startsWith("/admin " + this.main.ADMINPASS + " ban")) {
+            if (message.getBody().toLowerCase().startsWith("\\admin " + this.main.ADMINPASS + " ban")) {
                 String[] split = message.getBody().split(" ", 6);
-                //String banned = message.getBody().substring(("/admin " + this.ADMINPASS + " ban ").length(), ("/admin " + this.ADMINPASS + " ban ").indexOf(' ', ("/admin " + this.ADMINPASS + " ban ").length()));
+                //String banned = message.getBody().substring(("\\admin " + this.ADMINPASS + " ban ").length(), ("\\admin " + this.ADMINPASS + " ban ").indexOf(' ', ("\\admin " + this.ADMINPASS + " ban ").length()));
                 String banned = split[3];
                 //String bantime = message.getBody().substring(message.getBody().indexOf(banned)+banned.length()+1);
                 String bantime = "";
@@ -785,43 +785,65 @@ class EchoMessageListener implements MessageListener {
                 main.debug_log("*** ADMIN MESSAGE RECEIVED ***\nBanned " + banned + " by " + chat.getParticipant() + " for " + bantime + " reason: " + reason.trim() + "\n" + message.getBody());
                 this.main.banList.remove(bannedUser);
                 this.main.banList.put(bannedUser, new Long(banexpireson));
-                this.main.sendToAll("_*Bot:* Banned " + banned + " for the next " + bantime + " minutes_ Reason:" + reason.trim() + "");
+                this.main.sendToAll("_*Bot*: Banned " + banned + " for the next " + bantime + " minutes_ Reason: " + reason.trim() + "");
+                return;
+            }
+
+            // repeal
+            if (message.getBody().toLowerCase().startsWith("\\admin " + this.main.ADMINPASS + " repeal")) {
+                String[] split = message.getBody().split(" ", 4);
+                //String banned = message.getBody().substring(("\\admin " + this.ADMINPASS + " ban ").length(), ("\\admin " + this.ADMINPASS + " ban ").indexOf(' ', ("\\admin " + this.ADMINPASS + " ban ").length()));
+                String banned = split[3];
+                //String bantime = message.getBody().substring(message.getBody().indexOf(banned)+banned.length()+1);
+                String bannedUser = (String) this.main.userID.get(banned.toLowerCase());
+                if (bannedUser == null) {
+                    chat.sendMessage("_No such user on this conference. (You sent repeal for " + banned + ")_");
+                    return;
+                } else {
+                    String senderName = (String) this.main.usernames.get(chat.getParticipant());
+                    String privateMessage = "*" + senderName + " has repealed for you* : " + "\n*You are back in the conference.*";
+                    this.main.connection.getChatManager().createChat(bannedUser, this).sendMessage(privateMessage);
+
+                }
+                main.debug_log("*** ADMIN MESSAGE RECEIVED ***\nRepealed " + banned + " by " + chat.getParticipant() + "\n" + message.getBody());
+                this.main.banList.remove(bannedUser);
+                this.main.sendToAll("_*Bot*: Repealed " + banned );
                 return;
             }
 
             // adminhelp
             // covers pause, start, quit, sendtoall, warn, ban, 
-            if (message.getBody().toLowerCase().startsWith("/admin " + this.main.ADMINPASS + " help") && this.main.running) {
+            if (message.getBody().toLowerCase().startsWith("\\admin " + this.main.ADMINPASS + " help") && this.main.running) {
                 main.debug_log("*** ADMIN MESSAGE RECEIVED ***\nAdmin help by " + chat.getParticipant() + " : " + message.getBody());
-                chat.sendMessage("*Admin Commands and their description*\n\"/admin [admin_pass] pause\" - Pauses the conference bot.\n\"/admin [admin_pass] start\" - Unpauses the conference bot\n\"/admin [admin_pass] sendtoall [Message here]\" - Sends a message to all connected users.\n\"/admin [admin_pass] quit\" - Stops the conference bot permanently.\n\"/admin [admin_pass] warn [username] {Reason_Optional}\" - Sends a warning to the user and notifies everybody else. Look up username using /who command.\n\"/admin [admin_pass] ban [username] {Time in minutes {Reason}}\" - Bans the specified user for given time (default 10 minutes), reason may be specified. Notifies everybody.\n_All commands are case insensitive. For non-admin commands, type /help._");
+                chat.sendMessage("*Admin Commands and their description*\n\"\\admin [admin_pass] pause\" - Pauses the conference bot.\n\"\\admin [admin_pass] start\" - Unpauses the conference bot\n\"\\admin [admin_pass] sendtoall [Message here]\" - Sends a message to all connected users.\n\"\\admin [admin_pass] quit\" - Stops the conference bot permanently.\n\"\\admin [admin_pass] warn [username] {Reason_Optional}\" - Sends a warning to the user and notifies everybody else. Look up username using /who command.\n\"\\admin [admin_pass] ban [username] {Time in minutes {Reason}}\" - Bans the specified user for given time (default 10 minutes), reason may be specified. Notifies everybody.\n_All commands are case insensitive. For non-admin commands, type \\help._");
                 return;
             }
 
             // help
-            if (message.getBody().toLowerCase().startsWith("/help")) {
+            if (message.getBody().toLowerCase().startsWith("\\help")) {
                 this.enterMessageToLog(chat, message.getBody());
                 //chat.sendMessage("Sorry help not implemented yet. Talk to amanatiit@gmail.com and suggest features that you would like to see implemented.");
-                chat.sendMessage("*Commands and their description*\n\"/start poll [Question Here]\" - Starts new poll\n\"/stop poll\" - Stops running poll\n\"/vote [response]\" - Record your vote on the running poll. Allowed Responses: yes/no/maybe\n\"/DND [x]\" - Do Not Disturb for specified time (x in minutes). By default x is 60. \n\"/wakeup\" - Join conference after DND.\n\"/who\" - See who is online.\n\"/set topic [topic of discussion]\" - Sets topic of discussion\n\"@username [message]\" - PM to user (username is case insensitive, use \"/who\" to find out who is online).\n\"/status\" - Prints status of bot, content filter mode and poll results\n\"/ping [test message]\" - Send and Receive a Ping to the Bot\n\"/log\" - See log of past messages\n_All commands are case insensitive._");
+                chat.sendMessage("*Commands and their description*\n\"\\start poll [Question Here]\" - Starts new poll\n\"\\stop poll\" - Stops running poll\n\"\\vote [response]\" - Record your vote on the running poll. Allowed Responses: yes/no/maybe\n\"\\DND [x]\" - Do Not Disturb for specified time (x in minutes). By default x is 60. \n\"\\wakeup\" - Join conference after DND.\n\"\\who\" - See who is online.\n\"\\set topic [topic of discussion]\" - Sets topic of discussion\n\"@username [message]\" - PM to user (username is case insensitive, use \"\\who\" to find out who is online).\n\"\\status\" - Prints status of bot, content filter mode and poll results\n\"\\ping [test message]\" - Send and Receive a Ping to the Bot\n\"\\log\" - See log of past messages\n_All commands are case insensitive._");
                 return;
             }
 
             // mode 
-            if (message.getBody().toLowerCase().startsWith("/mode ")) {
+            if (message.getBody().toLowerCase().startsWith("\\mode ")) {
                 this.enterMessageToLog(chat, message.getBody());
-                String newmode = message.getBody().toLowerCase().substring("/mode ".length());
+                String newmode = message.getBody().toLowerCase().substring("\\mode ".length());
                 if (this.main.mode.equals(newmode)) {
                     chat.sendMessage("_Mode is already " + newmode + "._");
                     return;
                 }
-                if (message.getBody().toLowerCase().startsWith("/mode dirty")) {
+                if (message.getBody().toLowerCase().startsWith("\\mode dirty")) {
                     this.main.mode = "dirty";
                     this.main.sendToAll("_Mode set to dirty by " + this.main.getScreenName(chat.getParticipant()) + "._");
                     return;
-                } else if (message.getBody().toLowerCase().startsWith("/mode clean")) {
+                } else if (message.getBody().toLowerCase().startsWith("\\mode clean")) {
                     this.main.mode = "clean";
                     this.main.sendToAll("_Mode set to clean by " + this.main.getScreenName(chat.getParticipant()) + "._");
                     return;
-                } else if (message.getBody().toLowerCase().startsWith("/mode default")) {
+                } else if (message.getBody().toLowerCase().startsWith("\\mode default")) {
                     this.main.mode = "default";
                     this.main.sendToAll("_Mode set to default by " + this.main.getScreenName(chat.getParticipant()) + "._");
                     return;
@@ -832,10 +854,10 @@ class EchoMessageListener implements MessageListener {
             }
 
             // DND 
-            if (message.getBody().toLowerCase().startsWith("/dnd")) {
+            if (message.getBody().toLowerCase().startsWith("\\dnd")) {
                 this.enterMessageToLog(chat, message.getBody());
                 String dndtime = null;
-                if (message.getBody().toLowerCase().equals("/dnd") || message.getBody().toLowerCase().equals("/dnd ")) {
+                if (message.getBody().toLowerCase().equals("\\dnd") || message.getBody().toLowerCase().equals("\\dnd ")) {
                     dndtime = "60";
                 } else {
                     dndtime = message.getBody().substring(5);
@@ -845,12 +867,12 @@ class EchoMessageListener implements MessageListener {
                 main.debug_log("Added " + chat.getParticipant() + " to DND list for " + dndtime + " minutes. Wake up on " + dndexpireson + ".");
                 this.main.dndList.remove(chat.getParticipant());
                 this.main.dndList.put(chat.getParticipant(), new Long(dndexpireson));
-                chat.sendMessage("_You will not be disturbed for the next " + dndtime + " minutes. Type \"/wakeup\" to wake up and join the conference._");
+                chat.sendMessage("_You will not be disturbed for the next " + dndtime + " minutes. Type \"\\wakeup\" to wake up and join the conference._");
                 return;
             }
 
             // wakeup
-            if (message.getBody().toLowerCase().startsWith("/wakeup")) {
+            if (message.getBody().toLowerCase().startsWith("\\wakeup")) {
                 this.enterMessageToLog(chat, message.getBody());
                 this.main.dndList.remove(chat.getParticipant());
                 this.main.dndList.put(chat.getParticipant(), new Long(0));
@@ -859,7 +881,7 @@ class EchoMessageListener implements MessageListener {
             }
 
             // who
-            if (message.getBody().toLowerCase().startsWith("/who")) {
+            if (message.getBody().toLowerCase().startsWith("\\who")) {
                 this.enterMessageToLog(chat, message.getBody());
                 String reply = "_Following people are online right now._\n";
                 long currenttime = System.currentTimeMillis();
@@ -882,10 +904,10 @@ class EchoMessageListener implements MessageListener {
             }
 
             // start poll
-            if (message.getBody().toLowerCase().startsWith("/start poll ")) {
+            if (message.getBody().toLowerCase().startsWith("\\start poll ")) {
                 this.enterMessageToLog(chat, message.getBody());
-                this.main.poll = message.getBody().substring("/start poll ".length()).trim();
-                this.main.sendToAll("_" + this.main.getScreenName(chat.getParticipant()) + " has started a poll: *" + this.main.poll + "*_\n_To vote, type \"/vote yes\", \"/vote no\" or \"/vote maybe\"._\n_Use \"/status\" to view results._");
+                this.main.poll = message.getBody().substring("\\start poll ".length()).trim();
+                this.main.sendToAll("_" + this.main.getScreenName(chat.getParticipant()) + " has started a poll: *" + this.main.poll + "*_\n_To vote, type \"\\vote yes\", \"\\vote no\" or \"\\vote maybe\"._\n_Use \"\\status\" to view results._");
                 this.main.pollRunning = true;
                 this.main.pollresult = new Hashtable();
                 this.main.setPresence(Presence.Type.available, (!this.main.topic.equals("") ? ("_Topic: *" + this.main.topic + "*_  \n") : "") + (this.main.pollRunning ? ("_Poll: *" + this.main.poll + "*_ \n") : "") + Main.DEFAULT_PRESENCE);
@@ -893,7 +915,7 @@ class EchoMessageListener implements MessageListener {
             }
 
             // stop poll
-            if (message.getBody().toLowerCase().startsWith("/stop poll")) {
+            if (message.getBody().toLowerCase().startsWith("\\stop poll")) {
                 this.enterMessageToLog(chat, message.getBody());
                 if (!this.main.pollRunning) {
                     chat.sendMessage("_Error. No Poll is Running._");
@@ -908,7 +930,7 @@ class EchoMessageListener implements MessageListener {
             }
 
             // vote 
-            if (message.getBody().toLowerCase().startsWith("/vote ")) {
+            if (message.getBody().toLowerCase().startsWith("\\vote ")) {
                 this.enterMessageToLog(chat, message.getBody());
                 if (!this.main.pollRunning) {
                     chat.sendMessage("_Error. No active poll._");
@@ -923,14 +945,14 @@ class EchoMessageListener implements MessageListener {
                     chat.sendMessage("_Your vote has been recorded._");
                     return;
                 } else {
-                    chat.sendMessage("_Error. Invalid option. To vote, type \"/vote yes\", \"/vote no\" or \"/vote maybe\"_");
+                    chat.sendMessage("_Error. Invalid option. To vote, type \"\\vote yes\", \"\\vote no\" or \"\\vote maybe\"_");
                     return;
                 }
             }
 
 
             // ping
-            if (message.getBody().toLowerCase().startsWith("/ping")) {
+            if (message.getBody().toLowerCase().startsWith("\\ping")) {
                 this.enterMessageToLog(chat, message.getBody());
                 chat.sendMessage("_Ping Received._\n" + message.getBody());
                 //chat.sendMessage("Time: " + java.util.Calendar.getInstance().toString());
@@ -938,7 +960,7 @@ class EchoMessageListener implements MessageListener {
             }
 
             // log
-            try {if (message.getBody().toLowerCase().startsWith("/log")) {
+            try {if (message.getBody().toLowerCase().startsWith("\\log")) {
                 if (this.main.messageLog.size() == 0) {
                     chat.sendMessage("No Messages in Log.");
                     return;
@@ -965,7 +987,7 @@ class EchoMessageListener implements MessageListener {
 
 
             // status
-            if (message.getBody().toLowerCase().startsWith("/status")) {
+            if (message.getBody().toLowerCase().startsWith("\\status")) {
                 this.enterMessageToLog(chat, message.getBody());
                 long currenttime = System.currentTimeMillis();
                 String reply = "_Status: " + (this.main.running ? "Bot running_" : "Bot paused_");
@@ -993,7 +1015,7 @@ class EchoMessageListener implements MessageListener {
             }
 
             // anagrams
-            if (message.getBody().toLowerCase().startsWith("/anagrams") || message.getBody().toLowerCase().startsWith("/games")) {
+            if (message.getBody().toLowerCase().startsWith("\\anagrams") || message.getBody().toLowerCase().startsWith("/games")) {
                 this.enterMessageToLog(chat, message.getBody());
                 this.main.anagramChats.remove(chat.getParticipant());
                 this.main.anagramChats.put(chat.getParticipant(), chat);
@@ -1002,7 +1024,7 @@ class EchoMessageListener implements MessageListener {
             }
 
             // exit (anagrams)
-            if (message.getBody().toLowerCase().startsWith("/exit") && this.main.anagramChats.containsKey(chat.getParticipant())) {
+            if (message.getBody().toLowerCase().startsWith("\\exit") && this.main.anagramChats.containsKey(chat.getParticipant())) {
                 this.enterMessageToLog(chat, message.getBody());
                 this.main.anagramChats.remove(chat.getParticipant());
                 chat.sendMessage("_Thanks for playing anagrams!_");
@@ -1023,13 +1045,13 @@ class EchoMessageListener implements MessageListener {
             }
 
             // hint (anagrams)
-            if (message.getBody().toLowerCase().startsWith("/hint") && this.main.anagramChats.containsKey(chat.getParticipant())) {
+            if (message.getBody().toLowerCase().startsWith("\\hint") && this.main.anagramChats.containsKey(chat.getParticipant())) {
                 this.main.anagramThread.sendAHint(chat);
                 return;
             }
 
             // scores
-            if (message.getBody().toLowerCase().startsWith("/scores")) {
+            if (message.getBody().toLowerCase().startsWith("\\scores")) {
                 this.enterMessageToLog(chat, message.getBody());
 
                 synchronized (this.main.scores) {
@@ -1061,13 +1083,13 @@ class EchoMessageListener implements MessageListener {
             }
 
             // set topic
-            if (message.getBody().toLowerCase().startsWith("/set topic ")) {
+            if (message.getBody().toLowerCase().startsWith("\\set topic ")) {
                 this.enterMessageToLog(chat, message.getBody());
                 if (!this.main.running) {
                     chat.sendMessage("_Error: Topic cannot be set while bot has been paused._");
                     return;
                 }
-                if (message.getBody().toLowerCase().equals("/set topic ")) {
+                if (message.getBody().toLowerCase().equals("\\set topic ")) {
                     chat.sendMessage("_Error: Missing topic!_");
                     return;
                 }
@@ -1093,7 +1115,7 @@ class EchoMessageListener implements MessageListener {
                     chat.sendMessage("_User " + sendToName + " has requested not be disturbed._");
                 } else {
                     String senderName = this.main.getScreenName(chat.getParticipant());
-                    String privateMessage = "*" + senderName + " says in private:* " + message.getBody().substring(message.getBody().indexOf(" ") + 1);
+                    String privateMessage = "*" + senderName + " says in private*: " + message.getBody().substring(message.getBody().indexOf(" ") + 1);
                     this.main.connection.getChatManager().createChat(sendToUser, this).sendMessage(privateMessage);
                     return;
                 }
@@ -1105,20 +1127,20 @@ class EchoMessageListener implements MessageListener {
                 return;
             }
 
-            if (message.getBody().toLowerCase().startsWith("/admin")) {
-                chat.sendMessage("_Sorry your message has not been forwarded. Incorrect password and/or invalid command. If you are trying to run a admin command, try \"/admin <password> help\"._");
+            if (message.getBody().toLowerCase().startsWith("\\admin")) {
+                chat.sendMessage("_Sorry your message has not been forwarded. Incorrect password and/or invalid command. If you are trying to run a admin command, try \"\\admin <password> help\"._");
                 return;
             }
 
             // set topic
-            if (message.getBody().trim().toLowerCase().equals("/set topic")) {
+            if (message.getBody().trim().toLowerCase().equals("\\set topic")) {
                 this.enterMessageToLog(chat, message.getBody());
                 chat.sendMessage("_Error: Missing topic!_");
                 return;
             }
 
             // spam-me (testing if Issue 4 has been resolved)
-            if (message.getBody().trim().toLowerCase().equals("/spam-me")) {
+            if (message.getBody().trim().toLowerCase().equals("\\spam-me")) {
                 this.enterMessageToLog(chat, message.getBody());
                 for (int qw = 0; qw < 10; qw++) {
                     for (int i = 0; i < this.main.relayTo.length; i++) {
@@ -1158,9 +1180,9 @@ class EchoMessageListener implements MessageListener {
                         String name = this.main.getScreenName(chat.getParticipant());
                         String msg = this.main.getFormattedMessage(message.getBody());
                         if (name == null) {
-                            chat1.sendMessage("*" + chat.getParticipant() + ":* " + msg);
+                            chat1.sendMessage("*" + chat.getParticipant() + "*: " + msg);
                         } else {
-                            chat1.sendMessage("*" + name + ":* " + msg);
+                            chat1.sendMessage("*" + name + "*: " + msg);
                         }
                         // Sleep for 100 ms between forwarding messages 
                         // - cheap trick to solve issue 4
