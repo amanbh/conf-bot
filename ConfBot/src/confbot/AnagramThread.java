@@ -122,7 +122,7 @@ public class AnagramThread extends Thread {
 
     void newlyJoined(Chat chat) throws XMPPException {
         main.debug_log(chat.getParticipant() + " has joined anagrams");
-        chat.sendMessage("_Welcome to Anagrams with " + this.dictionary.size() + " words. Type */exit* to exit the game, */scores* to view overall scores and */hint* to get a hint._\n_(You will not be able to send any messages while you are playing)._");
+        chat.sendMessage("_Welcome to Anagrams with " + this.dictionary.size() + " words. Type *\\exit* to exit the game, *\\scores* to view overall scores and *\\hint* to get a hint._\n_(You will not be able to send any messages while you are playing)._");
         sendLastQuestion(chat);
     }
 
