@@ -57,7 +57,7 @@ public class Main implements Runnable {
 
     ArrayList<String> messageLog;
     static final int MAX_MESSAGE_LOG_SIZE = 60;
-    static final String VERSION = "0.3-beta";
+    static final String VERSION = "0.3.1";
     
     String BOTUSERNAME;
     String BOTPASSWORD;
@@ -74,7 +74,7 @@ public class Main implements Runnable {
     private BufferedWriter out;
     Launcher launcher;
                                                                                                                     private static String specialWords[] = {"fuck", "sex", "rape", "ass", "asshole", "fcuk", "slut", "chutiye", "chutiya", "madar", "boob", "porn", "choot", "behenchod", "incest"};
-    static final String DEFAULT_PRESENCE = "Running a gtalkbot! *Now with anagrams! Start the game by \'\\anagarms\'. Try them now!* Type your message and it will be forwarded to everyone. For help type \"\\help\"";
+    static final String DEFAULT_PRESENCE = "Running a gtalkbot! *New Command*: If the bot is not recognizing whether you're online/offline, try *\\refresh*";//"Running a gtalkbot! *Now with anagrams! Start the game by \'\\anagarms\'. Try them now!* Type your message and it will be forwarded to everyone. For help type \"\\help\"";
 
 //    static boolean SHOULD_ACCPET_FILES = true;
 //    static FileTransferManager manager;
@@ -305,7 +305,7 @@ public class Main implements Runnable {
     }
 
     /* Method to get roster information */
-    private int getRoster() {
+    int getRoster() {
         // print roster
         // debug_log("Main: Printing Roster\n*********************");
         roster = connection.getRoster();
@@ -331,7 +331,7 @@ public class Main implements Runnable {
 
     /* Method to initialize coonnection to XMPP server */
     private void initializeConnection() throws XMPPException {
-        //ProxyInfo proxyInfo = new ProxyInfo(ProxyInfo.ProxyType.HTTP, "ernetproxy.iitk.ac.in", 3128, "amanbh", "{P;;osa");
+        //ProxyInfo proxyInfo = new ProxyInfo(ProxyInfo.ProxyType.HTTP, "ernetproxy.iitk.ac.in", 3128, "username", "passwd");
         //ConnectionConfiguration connConfig = new ConnectionConfiguration("talk.google.com", 443, proxyInfo);
 
         //ConnectionConfiguration connConfig = new ConnectionConfiguration("talk.google.com", 443, "gmail.com");
@@ -959,7 +959,16 @@ class EchoMessageListener implements MessageListener {
                 //chat.sendMessage("Time: " + java.util.Calendar.getInstance().toString());
                 return;
             }
-
+            
+				// refresh
+            if (message.getBody().toLowerCase().startsWith("\\refresh")) {
+                this.enterMessageToLog(chat, message.getBody());
+                this.main.getRoster();
+                chat.sendMessage("_Refresh Received._\n" + message.getBody());
+                //chat.sendMessage("Time: " + java.util.Calendar.getInstance().toString());
+                return;
+            }
+				
             // log
             try {if (message.getBody().toLowerCase().startsWith("\\log")) {
                 if (this.main.messageLog.size() == 0) {
@@ -993,6 +1002,7 @@ class EchoMessageListener implements MessageListener {
                 this.enterMessageToLog(chat, message.getBody());
                 long currenttime = System.currentTimeMillis();
                 String reply = "_Status: " + (this.main.running ? "Bot running_" : "Bot paused_");
+                reply = reply.concat("\n_Time on server: " + this.getTime() + "_");
                 reply = reply.concat("\n_Version: " + this.main.VERSION + "_");
                 reply = reply.concat("\n_Content Filter Mode: " + this.main.mode + "_");
                 if (this.main.pollRunning) {
