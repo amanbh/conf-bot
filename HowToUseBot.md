@@ -1,0 +1,59 @@
+**Starting [Revision 21](https://code.google.com/p/conf-bot/source/detail?r=21), All commands now start with "\" instead of "/" - This is to improve user-experience on certain IM clients like empathy. Changes have not yet been made to zipped distributions.**
+
+# Introduction #
+
+When your bot is running, all users that have added the bot-account to their buddy list will see that it is online and available. Any message that they wish to send to other users connected to the bot, they can send to the bot using any IM client that supports Gtalk, and the bot will forward that message to everyone else.
+
+Users can also send private messages to each other that are not seen by other users. To end a private message (PM), type `@` followed by the intended recipient's name followed by the message. Example: To send a message to John, type `@john how are you doing johnathan?`
+
+# Commands and their description #
+
+
+**Starting [Revision 21](https://code.google.com/p/conf-bot/source/detail?r=21), All commands now start with "\" instead of "/" - This is to improve user-experience on certain IM clients like empathy. Changes have not yet been made to zipped distributions.**
+
+The conf-bot includes a number of useful and fun features for the user in addition to the conference. These are available using simple commands that are listed below.
+
+**You can also view these commands by sending the message `/help` to the bot.**
+
+_All commands are case insensitive._
+
+  * `/start poll [Question Here]` - Starts new poll
+  * `/stop poll` - Stops running poll
+  * `/vote [response]` - Record your vote on the running poll. Allowed Responses: yes/no/maybe
+  * `/DND [x]` - Do Not Disturb for specified time (x in minutes). By default x is 60.
+  * `/wakeup` - Join conference after DND.
+  * `/who` - See who is online.
+  * `/set topic [topic of discussion]` - Sets topic of discussion
+  * `@username [message]` - Private Message to user (username is case insensitive, use `/who` to find out who is online).
+  * `/status` - Prints status of bot, content filter mode and poll results
+  * `/ping [test message]` - Send and Receive a Ping to the Bot
+  * `/log` - See log of past messages
+
+
+## Admin Commands ##
+
+The conf-bot allows the administrator to moderate and control the bot remotely. Any user who has the knowledge of the admin password (set at the time of starting the bot) can use the following commands to moderate the bot.
+
+**You can also view these commands by sending the message `/admin [admin_pass] help` to the bot.**
+
+_All commands are case insensitive._
+
+  * `/admin [admin_pass] pause` - Pauses the conference bot so that no user can send any message.
+  * `/admin [admin_pass] start` - Unpauses the conference bot
+  * `/admin [admin_pass] sendtoall [Message here]` - Sends a message to all connected users.
+  * `/admin [admin_pass] quit` - Stops the conference bot permanently (Bot needs to be paused first).
+  * `/admin [admin_pass] quit forced` - Stops the conference bot silently (Bot does not need to be paused first).
+  * `/admin [admin_pass] warn [username] {Reason_Optional}` - Sends a warning to the user and notifies everybody else. Look up username using /who command.
+  * `/admin [admin_pass] ban [username] {Time in minutes {Reason}}` - Bans the specified user for given time (default 10 minutes), reason may be specified. Notifies everybody.
+
+  * '/admin [admin\_pass](admin_pass.md) help` - Displays help for admin commands.
+
+## Anagrams! ##
+
+Conf-Bot allows users to take part in a anagrams tournament that runs inside their chat windows!
+
+To start receiving anagrams, send `/anagrams` to the bot and you will receive your first question. Unjumble the given letters to form the required word and you will be rewarded points.
+
+Find a word too tough to handle? You can always use the `/hint` command to receive a hint. Beware that other players will also receive this hint and this will also lower the score that you will receive for answering this question.
+
+Find out what's your score by sending `/scores` and stop the game by typing `/exit`.
